@@ -1,3 +1,5 @@
+import BookList from '../components/BookList'
+
 export default function HomePage() {
   return (
     <main className="container mx-auto px-4 py-8">
@@ -59,6 +61,11 @@ export default function HomePage() {
             Framework setup complete! Ready for feature development.
           </p>
         </div>
+
+        <section className="mt-12">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-900">Your TBR List</h2>
+          <BookList />
+        </section>
       </div>
     </main>
   )
