@@ -1,4 +1,5 @@
 import { signIn, signOut, useSession } from 'next-auth/react'
+import BookList from '../components/BookList'
 
 export default function HomePage() {
   const { data: session } = useSession()
@@ -73,6 +74,11 @@ export default function HomePage() {
               : 'Framework setup complete! Ready for feature development.'}
           </p>
         </div>
+
+        <section className="mt-12">
+          <h2 className="mb-4 text-2xl font-semibold text-gray-900">Your TBR List</h2>
+          <BookList />
+        </section>
       </div>
     </main>
   )
