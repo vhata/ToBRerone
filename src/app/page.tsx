@@ -1,4 +1,7 @@
+import { signIn, signOut, useSession } from 'next-auth/react'
+
 export default function HomePage() {
+  const { data: session } = useSession()
   return (
     <main className="container mx-auto px-4 py-8">
       <div className="mx-auto max-w-4xl">
@@ -49,14 +52,25 @@ export default function HomePage() {
         </div>
 
         <div className="text-center">
-          <button
-            className="rounded-lg bg-primary-600 px-8 py-3 font-semibold text-white transition-colors duration-200 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300"
-            disabled
-          >
-            Get Started (Coming Soon)
-          </button>
+          {session ? (
+            <button
+              onClick={() => signOut()}
+              className="rounded-lg bg-primary-600 px-8 py-3 font-semibold text-white transition-colors duration-200 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300"
+            >
+              Sign Out
+            </button>
+          ) : (
+            <button
+              onClick={() => signIn('google')}
+              className="rounded-lg bg-primary-600 px-8 py-3 font-semibold text-white transition-colors duration-200 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300"
+            >
+              Sign in with Google
+            </button>
+          )}
           <p className="mt-2 text-sm text-gray-500">
-            Framework setup complete! Ready for feature development.
+            {session
+              ? 'Connected to Google Sheets.'
+              : 'Framework setup complete! Ready for feature development.'}
           </p>
         </div>
       </div>

@@ -1,5 +1,11 @@
 import { render, screen } from '@testing-library/react'
 import HomePage from '../page'
+jest.mock('next-auth/react', () => ({
+  __esModule: true,
+  useSession: jest.fn(() => ({ data: null, status: 'unauthenticated' })),
+  signIn: jest.fn(),
+  signOut: jest.fn(),
+}))
 
 describe('HomePage', () => {
   it('renders the main heading', () => {
@@ -14,10 +20,10 @@ describe('HomePage', () => {
     expect(welcome).toBeInTheDocument()
   })
 
-  it('shows the get started button as disabled', () => {
+  it('shows the sign in button', () => {
     render(<HomePage />)
-    const button = screen.getByRole('button', { name: /get started/i })
-    expect(button).toBeDisabled()
+    const button = screen.getByRole('button', { name: /sign in with google/i })
+    expect(button).toBeInTheDocument()
   })
 
   it('displays all feature cards', () => {
