@@ -43,6 +43,16 @@ A modern, accessible TBR (To Be Read) tracking application with Google Sheets in
 
 3. Open [http://localhost:3000](http://localhost:3000) with your browser.
 
+### Google OAuth Setup
+
+To enable Google Sheets authentication, create a Google OAuth 2.0 Client ID and add it to a `.env.local` file at the project root:
+
+```
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_client_id_here
+```
+
+Restart the development server after adding the environment variable.
+
 ## Available Scripts
 
 - `npm run dev` - Start development server

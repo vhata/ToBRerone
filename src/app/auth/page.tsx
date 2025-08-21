@@ -32,6 +32,8 @@ declare global {
 export default function GoogleAuthPage() {
   const [scriptLoaded, setScriptLoaded] = useState(false)
   const [authMessage, setAuthMessage] = useState('')
+  const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID
+  const missingClientId = !clientId
 
   useEffect(() => {
     const script = document.createElement('script')
@@ -43,18 +45,22 @@ export default function GoogleAuthPage() {
 
   const handleAuth = () => {
     if (!window.google) return
+    if (!clientId) {
+      setAuthMessage('Missing Google OAuth client ID.')
+      return
+    }
 
-      const client = window.google.accounts.oauth2.initTokenClient({
-        client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID ?? '',
-        scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
-        callback: (tokenResponse: TokenResponse) => {
-          if (tokenResponse.access_token) {
-            setAuthMessage('Authentication successful!')
-          } else {
-            setAuthMessage('Authentication failed.')
-          }
-        },
-      })
+    const client = window.google.accounts.oauth2.initTokenClient({
+      client_id: clientId,
+      scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
+      callback: (tokenResponse: TokenResponse) => {
+        if (tokenResponse.access_token) {
+          setAuthMessage('Authentication successful!')
+        } else {
+          setAuthMessage('Authentication failed.')
+        }
+      },
+    })
 
     client.requestAccessToken()
   }
@@ -69,11 +75,18 @@ export default function GoogleAuthPage() {
         <button
           onClick={handleAuth}
           className="rounded-lg bg-primary-600 px-8 py-3 font-semibold text-white transition-colors duration-200 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300"
-          disabled={!scriptLoaded}
+          disabled={!scriptLoaded || missingClientId}
         >
           Authenticate with Google
         </button>
-        {authMessage && <p className="mt-4 text-sm text-green-600">{authMessage}</p>}
+        {missingClientId && (
+          <p className="mt-4 text-sm text-red-600">
+            Missing Google OAuth client ID. Set NEXT_PUBLIC_GOOGLE_CLIENT_ID in your environment.
+          </p>
+        )}
+        {authMessage && !missingClientId && (
+          <p className="mt-4 text-sm text-green-600">{authMessage}</p>
+        )}
       </div>
     </main>
   )
