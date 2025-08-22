@@ -53,9 +53,18 @@ export default function GoogleAuthPage() {
     const client = window.google.accounts.oauth2.initTokenClient({
       client_id: clientId,
       scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
-      callback: (tokenResponse: TokenResponse) => {
+      callback: async (tokenResponse: TokenResponse) => {
         if (tokenResponse.access_token) {
-          setAuthMessage('Authentication successful!')
+          try {
+            await fetch('/api/store-token', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ token: tokenResponse.access_token }),
+            })
+            setAuthMessage('Authentication successful!')
+          } catch {
+            setAuthMessage('Failed to store token.')
+          }
         } else {
           setAuthMessage('Authentication failed.')
         }
