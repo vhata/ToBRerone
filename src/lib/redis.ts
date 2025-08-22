@@ -1,6 +1,8 @@
-let client: any = null
+import type { RedisClientType } from 'redis'
 
-export async function getRedisClient(): Promise<any> {
+let client: RedisClientType | null = null
+
+export async function getRedisClient(): Promise<RedisClientType> {
   if (!client) {
     const { createClient } = await import('redis')
     const url = process.env.REDIS_URL
