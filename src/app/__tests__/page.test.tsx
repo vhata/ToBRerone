@@ -20,6 +20,12 @@ describe('HomePage', () => {
     expect(button).toBeDisabled()
   })
 
+  it('includes a link to authenticate with Google', () => {
+    render(<HomePage />)
+    const link = screen.getByRole('link', { name: /authenticate with google/i })
+    expect(link).toHaveAttribute('href', '/auth')
+  })
+
   it('displays all feature cards', () => {
     render(<HomePage />)
     expect(screen.getByText(/track your books/i)).toBeInTheDocument()
