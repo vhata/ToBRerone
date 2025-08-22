@@ -49,6 +49,7 @@ To enable Google Sheets authentication, create a Google OAuth 2.0 Client ID and 
 
 ```
 NEXT_PUBLIC_GOOGLE_CLIENT_ID=your_client_id_here
+REDIS_URL=your_redis_connection_string
 ```
 
 Restart the development server after adding the environment variable.
