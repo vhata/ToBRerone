@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export default function HomePage() {
   return (
     <main className="container mx-auto px-4 py-8">
@@ -49,6 +51,12 @@ export default function HomePage() {
         </div>
 
         <div className="text-center">
+          <Link
+            href="/auth"
+            className="mb-4 inline-block rounded-lg bg-primary-600 px-8 py-3 font-semibold text-white transition-colors duration-200 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300"
+          >
+            Authenticate with Google
+          </Link>
           <button
             className="rounded-lg bg-primary-600 px-8 py-3 font-semibold text-white transition-colors duration-200 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300"
             disabled
