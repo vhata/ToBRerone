@@ -12,6 +12,8 @@ module.exports = {
   '**/*.(md|json)': filenames => `prettier --write ${filenames.join(' ')}`,
 
   // Run tests related to changed files
-  '**/*.(ts|tsx|js|jsx)': (filenames) => 
-    filenames.length > 0 ? `npm run test -- --findRelatedTests --passWithNoTests ${filenames.join(' ')}` : 'npm run test -- --passWithNoTests',
+  '**/*.(ts|tsx|js|jsx)': filenames =>
+    filenames.length > 0
+      ? `npm run test -- --findRelatedTests --passWithNoTests ${filenames.join(' ')}`
+      : 'npm run test -- --passWithNoTests',
 }

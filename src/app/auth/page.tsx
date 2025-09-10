@@ -52,16 +52,40 @@ export default function GoogleAuthPage() {
 
     const client = window.google.accounts.oauth2.initTokenClient({
       client_id: clientId,
-      scope: 'https://www.googleapis.com/auth/spreadsheets.readonly',
+      scope:
+        'https://www.googleapis.com/auth/spreadsheets.readonly https://www.googleapis.com/auth/userinfo.profile',
       callback: async (tokenResponse: TokenResponse) => {
         if (tokenResponse.access_token) {
           try {
+            // Fetch user profile to get Google user ID
+            const userResponse = await fetch('https://www.googleapis.com/oauth2/v1/userinfo', {
+              headers: {
+                Authorization: `Bearer ${tokenResponse.access_token}`,
+              },
+            })
+
+            if (!userResponse.ok) {
+              setAuthMessage('Failed to fetch user profile.')
+              return
+            }
+
+            const userProfile = await userResponse.json()
+            const googleUserId = userProfile.id
+
+            if (!googleUserId) {
+              setAuthMessage('Failed to get user ID from Google.')
+              return
+            }
+
             await fetch('/api/store-token', {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
-              body: JSON.stringify({ token: tokenResponse.access_token }),
+              body: JSON.stringify({
+                token: tokenResponse.access_token,
+                userId: googleUserId,
+              }),
             })
-            setAuthMessage('Authentication successful!')
+            setAuthMessage(`Authentication successful! User ID: ${googleUserId}`)
           } catch {
             setAuthMessage('Failed to store token.')
           }
@@ -100,4 +124,3 @@ export default function GoogleAuthPage() {
     </main>
   )
 }
-

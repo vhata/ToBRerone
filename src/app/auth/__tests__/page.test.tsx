@@ -6,9 +6,6 @@ describe('GoogleAuthPage', () => {
     render(<GoogleAuthPage />)
     const button = screen.getByRole('button', { name: /authenticate with google/i })
     expect(button).toBeDisabled()
-    expect(
-      screen.getByText(/missing google oauth client id/i)
-    ).toBeInTheDocument()
+    expect(screen.getByText(/missing google oauth client id/i)).toBeInTheDocument()
   })
 })
-
